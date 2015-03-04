@@ -13,24 +13,17 @@ end
 class Solver
   def solve(inputs)
     @inputs = inputs
-    result = []
+    sorted = []
 
     until @inputs.empty? do
 
       inputs.each_with_index do |input, index|
-        if last_input?(index)
-          result << input
-          @inputs.delete_at(index)
-        elsif input_less_than_next?(index)
-          result << input
-          i = @inputs.find_index(input)
-          @inputs.delete_at(i)
-        end
+        move(index, sorted) if last_input?(index) || input_less_than_next?(index)
       end
 
     end
 
-    result
+    sorted
   end
 
   def input_less_than_next?(index)
@@ -43,5 +36,10 @@ class Solver
 
   def last_input?(index)
     index + 1 == @inputs.length
+  end
+
+  def move(index, sorted)
+    sorted << @inputs[index]
+    @inputs.delete_at(index)
   end
 end
